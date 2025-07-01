@@ -12,6 +12,7 @@ Interview preparation for technical AI/ML positions
 
 🔬 What's Inside
 Machine Learning Algorithms
+
 📈 Linear Regression
 
 Gradient descent optimization
