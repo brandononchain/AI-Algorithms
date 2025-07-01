@@ -3,7 +3,6 @@ A comprehensive collection of fundamental artificial intelligence and machine le
 
 🎯 Purpose
 This repository is designed for:
-
 Students learning AI/ML fundamentals
 Educators teaching algorithm concepts
 Developers wanting to understand implementations beyond black-box libraries
@@ -14,48 +13,43 @@ Interview preparation for technical AI/ML positions
 Machine Learning Algorithms
 
 📈 Linear Regression
-
 Gradient descent optimization
 Cost function visualization
 Performance metrics (MSE, R²)
 Interactive plotting with training progress
 
 🧠 Neural Network (Multilayer Perceptron)
-
 Backpropagation algorithm
 Configurable architecture (layers, neurons)
 Multiple activation functions (Sigmoid, ReLU)
 Binary classification with training visualization
 
 🧬 Genetic Algorithm
-
 Evolutionary optimization framework
 Tournament selection and crossover
 Multiple fitness function examples (knapsack, pattern matching)
 Population evolution tracking
 
 🎯 K-Means Clustering
-
 K-means++ smart initialization
 Elbow method for optimal cluster selection
 Silhouette score evaluation
 Centroid convergence visualization
 
 🌳 Decision Tree Classifier
-
 Information gain and entropy calculations
 Multiple splitting criteria (Gini impurity, Entropy)
 Feature importance analysis
 Tree structure visualization and pruning
 
 📊 Principal Component Analysis (PCA)
-
 Eigenvalue decomposition implementation
 Dimensionality reduction techniques
 Explained variance analysis
 Biplot and component loading visualization
 
 Search & Optimization
+
 🗺️ A Search Algorithm*
 
 Optimal pathfinding implementation
@@ -64,29 +58,26 @@ Grid-based navigation with obstacle avoidance
 Performance benchmarking across different scenarios
 
 ✨ Key Features
-🎓 Educational Focus
 
+🎓 Educational Focus
 Clear, commented code with step-by-step explanations
 Mathematical foundations explained in comments
 Visualization tools for understanding algorithm behavior
 Multiple examples demonstrating different use cases
 
 🔧 Implementation Details
-
 Pure Python/NumPy implementations (no scikit-learn for core algorithms)
 Modular design for easy modification and extension
 Performance metrics and evaluation tools
 Comparative analysis between different approaches
 
 📊 Comprehensive Visualization
-
 Training progress and convergence plots
 Algorithm behavior visualization
 Performance comparison charts
 Interactive demonstrations
 
 🧪 Testing & Validation
-
 Multiple datasets for each algorithm
 Performance benchmarking
 Parameter sensitivity analysis
