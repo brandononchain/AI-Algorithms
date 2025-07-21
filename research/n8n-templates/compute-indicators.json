@@ -1,0 +1,18 @@
+{
+  "name": "Compute Indicators",
+  "nodes": [
+    {
+      "parameters": {
+        "functionCode": "const df = $input.item.json.values;\nconst close = df.map(r => r.close);\n\n// RSI\nfunction calculateRSI(close, period=14) {\n  let gains = [], losses = [];\n  for (let i=1; i<close.length; i++) {\n    const delta = close[i] - close[i-1];\n    gains.push(Math.max(delta,0));\n    losses.push(Math.max(-delta,0));\n  }\n  const avgGain = gains.slice(0,period).reduce((a,b)=>a+b)/period;\n  const avgLoss = losses.slice(0,period).reduce((a,b)=>a+b)/period;\n  let rs = avgGain/avgLoss;\n  let rsi = [100 - (100/(1+rs))];\n  for (let i=period; i<close.length-1; i++) {\n    const g = gains[i], l = losses[i];\n    rs = ((rsi[i-period]*(period-1) + g)/period) / ((rsi[i-period]*(period-1)+l)/period);\n    rsi.push(100 - (100/(1+rs)));\n  }\n  return rsi;\n}\n\n// Bollinger Bands\function calculateBB(close, window=20, numStd=2) {\n  let middle=[];\n  for (let i=window-1; i<close.length; i++) {\n    const slice = close.slice(i-window+1, i+1);\n    const mean = slice.reduce((a,b)=>a+b)/window;\n    const std = Math.sqrt(slice.map(x=>Math.pow(x-mean,2)).reduce((a,b)=>a+b)/window);\n    middle.push(mean);\n  }\n  const upper = middle.map((m,i)=>m + numStd * (Math.sqrt(close.slice(i+window-1-window+1,i+window).map(x=>Math.pow(x-m,2)).reduce((a,b)=>a+b)/window)));\n  const lower = middle.map((m,i)=>m - numStd * (Math.sqrt(close.slice(i+window-1-window+1,i+window).map(x=>Math.pow(x-m,2)).reduce((a,b)=>a+b)/window)));\n  return { middle, upper, lower };\n}\n\nreturn [{ json: { rsi: calculateRSI(close), bb: calculateBB(close) } }];"
+      },
+      "name": "Function (Indicators)",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [450, 300]
+    }
+  ],
+  "connections": {},
+  "active": false,
+  "settings": {},
+  "id": "computeIndicators002"
+}
