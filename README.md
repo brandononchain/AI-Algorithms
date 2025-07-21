@@ -31,7 +31,7 @@ AI-Algorithms/
 ├── agent/           # AI agent logic & inference
 ├── scripts/         # Standalone scripts for signal generation, data prep, etc.
 ├── indicators/      # Custom indicator logic (TradingView-style or Python-based)
-├── research/        # Jupyter notebooks and experiments
+├── research/        # Jupyter notebooks, JSON, and research templates
 ├── utils/           # Helpers for data handling, prompts, logging, etc.
 ├── .env.example     # Environment variable sample
 └── README.md        # You are here
