@@ -1,180 +1,67 @@
-# AI-Algorithms
-A comprehensive collection of fundamental artificial intelligence and machine learning algorithms implemented from scratch in Python. This repository serves as an educational resource for understanding the core principles behind popular AI techniques without relying on high-level libraries.
+# 🧠 AI Algorithms
 
-🎯 Purpose
-This repository is designed for:
-Students learning AI/ML fundamentals
-Educators teaching algorithm concepts
-Developers wanting to understand implementations beyond black-box libraries
-Researchers needing customizable algorithm implementations
-Interview preparation for technical AI/ML positions
+A curated collection of AI-first trading and analysis tools, agents, and algorithmic logic. Built to explore the intersection of markets, machine learning, automation, and alpha.
 
-🔬 What's Inside
-Machine Learning Algorithms
+## ⚙️ Overview
 
-📈 Linear Regression
-Gradient descent optimization
-Cost function visualization
-Performance metrics (MSE, R²)
-Interactive plotting with training progress
+This repo is a live R\&D space for building and experimenting with AI-native trading algorithms. It includes:
 
-🧠 Neural Network (Multilayer Perceptron)
-Backpropagation algorithm
-Configurable architecture (layers, neurons)
-Multiple activation functions (Sigmoid, ReLU)
-Binary classification with training visualization
+* Quant strategies (rule-based and learning-based)
+* AI agent logic for automation and signal generation
+* Tools for market structure analysis
+* Experimental scripts and notebooks for futures, forex, crypto, and equities
 
-🧬 Genetic Algorithm
-Evolutionary optimization framework
-Tournament selection and crossover
-Multiple fitness function examples (knapsack, pattern matching)
-Population evolution tracking
+> ⚠️ **Note:** This is a sandbox project for research and prototyping. Use at your own risk.
 
-🎯 K-Means Clustering
-K-means++ smart initialization
-Elbow method for optimal cluster selection
-Silhouette score evaluation
-Centroid convergence visualization
 
-🌳 Decision Tree Classifier
-Information gain and entropy calculations
-Multiple splitting criteria (Gini impurity, Entropy)
-Feature importance analysis
-Tree structure visualization and pruning
+## 🚧 Work in Progress
 
-📊 Principal Component Analysis (PCA)
-Eigenvalue decomposition implementation
-Dimensionality reduction techniques
-Explained variance analysis
-Biplot and component loading visualization
+This repo evolves continuously. Some code may be experimental, partially functional, or intentionally left incomplete for testing or prompt engineering purposes.
 
-Search & Optimization
+If you’re looking for:
 
-🗺️ A Search Algorithm*
+* Fully integrated bots or automated trading flows → check my n8n workflows or reach out.
+* High-performance, production-ready systems → coming soon in Quantra Lab’s private repo.
 
-Optimal pathfinding implementation
-Multiple heuristic functions (Manhattan, Euclidean, Chebyshev, Octile)
-Grid-based navigation with obstacle avoidance
-Performance benchmarking across different scenarios
 
-✨ Key Features
+## 📁 Structure
 
-🎓 Educational Focus
-Clear, commented code with step-by-step explanations
-Mathematical foundations explained in comments
-Visualization tools for understanding algorithm behavior
-Multiple examples demonstrating different use cases
+```bash
+AI-Algorithms/
+├── agent/           # AI agent logic & inference
+├── scripts/         # Standalone scripts for signal generation, data prep, etc.
+├── indicators/      # Custom indicator logic (TradingView-style or Python-based)
+├── research/        # Jupyter notebooks and experiments
+├── utils/           # Helpers for data handling, prompts, logging, etc.
+├── .env.example     # Environment variable sample
+└── README.md        # You are here
+```
 
-🔧 Implementation Details
-Pure Python/NumPy implementations (no scikit-learn for core algorithms)
-Modular design for easy modification and extension
-Performance metrics and evaluation tools
-Comparative analysis between different approaches
 
-📊 Comprehensive Visualization
-Training progress and convergence plots
-Algorithm behavior visualization
-Performance comparison charts
-Interactive demonstrations
+## 🧰 Tech Stack
 
-🧪 Testing & Validation
-Multiple datasets for each algorithm
-Performance benchmarking
-Parameter sensitivity analysis
-Comparison with different configurations
+* Python (Pandas, NumPy, Scikit-learn, TA-Lib)
+* OpenAI API & Langchain (for intelligent agents)
+* TradingView-compatible indicators & signals
+* Jupyter, JSON, YAML for workflows and prompts
+* Integration-ready with n8n, MT5/MT4, ByBit, TwelveData, and more
 
-🚀 Getting Started
-Prerequisites
-bashpip install numpy matplotlib scikit-learn seaborn
-Quick Start
-python# Example: Running Linear Regression
-python linear_regression.py
 
-# Example: Neural Network Classification
-python neural_network.py
+## 🔮 Vision
 
-# Example: K-Means Clustering
-python kmeans.py
+> Build the future of trading with AI-first tools, not lagging indicators.
+> Alpha isn’t found — it’s engineered.
 
-Repository Structure
-ai-algorithms/
-├── linear_regression/
-│   └── linear_regression.py          # Gradient descent implementation
-├── neural_network/
-│   └── neural_network.py             # MLP with backpropagation
-├── genetic_algorithm/
-│   └── genetic_algorithm.py          # Evolutionary optimization
-├── kmeans_clustering/
-│   └── kmeans.py                     # Clustering with visualization
-├── decision_tree/
-│   └── decision_tree.py              # Classification tree
-├── a_star_search/
-│   └── a_star.py                     # Pathfinding algorithm
-├── pca/
-│   └── pca.py                        # Dimensionality reduction
-└── README.md
 
-📚 What You'll Learn:
+## 🛠️ Contributing
 
-🔍 Algorithm Internals
-How gradient descent optimizes model parameters
-The mathematics behind backpropagation
-Information theory applications in decision trees
-Eigenvalue decomposition in PCA
-Heuristic search strategies
+This is a personal playground, but if you're building something similar or want to collaborate:
 
-💡 Practical Skills
-Implementing ML algorithms from mathematical foundations
-Debugging and visualizing algorithm behavior
-Parameter tuning and optimization
-Performance evaluation and comparison
+* Open an issue or PR
+* Drop a DM on Twitter: [@brandononchain](https://twitter.com/brandononchain)
 
-🎯 Conceptual Understanding
-Bias-variance tradeoff
-Overfitting and underfitting
-Convergence criteria
-Feature importance and selection
-Dimensionality reduction techniques
 
-🎨 Visualization Examples
-Each algorithm includes rich visualizations:
+## 📄 License
 
-Training curves showing loss/accuracy over time
-Decision boundaries for classification algorithms
-Cluster evolution in unsupervised learning
-Search paths in optimization problems
-Component analysis in dimensionality reduction
+MIT — feel free to fork, build, or adapt. Attribution appreciated.
 
-🤝 Contributing
-Contributions are welcome! Areas for expansion:
-
-Additional algorithms (SVM, Random Forest, etc.)
-Advanced optimization techniques
-Deep learning fundamentals
-Reinforcement learning basics
-Performance optimizations
-
-📖 Educational Resources
-Each implementation includes:
-
-Theoretical background in code comments
-Step-by-step explanations of key concepts
-References to academic papers and textbooks
-Practical tips for real-world applications
-
-🎓 Perfect for Learning
-This repository bridges the gap between theoretical understanding and practical implementation. Whether you're:
-
-Preparing for technical interviews
-Taking a machine learning course
-Building AI applications from scratch
-Teaching AI/ML concepts
-
-You'll find clear, well-documented implementations that reveal the magic behind popular AI algorithms.
-
-📜 License
-MIT License - Feel free to use these implementations for educational and commercial purposes.
-
-⭐ Star this repository if you find it helpful for learning AI algorithms!
-🔗 Share with others who are on their AI/ML journey!
-📚 Contribute to help make AI education more accessible!
