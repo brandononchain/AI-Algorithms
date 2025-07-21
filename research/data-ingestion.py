@@ -13,7 +13,6 @@ import requests
 API_KEYS = {
     "twelvedata": os.getenv("TWELVEDATA_API_KEY"),
     "alpha_vantage": os.getenv("ALPHAVANTAGE_API_KEY"),
-    "binance": None  # Binance uses no key for public endpoints
 }
 
 # %% [code]
