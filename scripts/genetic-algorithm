@@ -1,0 +1,295 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from typing import List, Tuple, Callable, Any
+import random
+
+class GeneticAlgorithm:
+    """
+    Genetic Algorithm implementation for optimization problems.
+    
+    Attributes:
+        population_size (int): Size of the population
+        gene_length (int): Length of each chromosome
+        mutation_rate (float): Probability of mutation
+        crossover_rate (float): Probability of crossover
+        elitism_rate (float): Percentage of best individuals to keep
+        generations (int): Number of generations to evolve
+        fitness_function (Callable): Function to evaluate fitness
+        population (List): Current population
+        fitness_history (List): History of best fitness values
+    """
+    
+    def __init__(self, population_size: int = 100, gene_length: int = 10,
+                 mutation_rate: float = 0.01, crossover_rate: float = 0.8,
+                 elitism_rate: float = 0.1, generations: int = 100):
+        self.population_size = population_size
+        self.gene_length = gene_length
+        self.mutation_rate = mutation_rate
+        self.crossover_rate = crossover_rate
+        self.elitism_rate = elitism_rate
+        self.generations = generations
+        self.fitness_function = None
+        self.population = []
+        self.fitness_history = []
+        self.best_fitness_history = []
+        self.average_fitness_history = []
+    
+    def initialize_population(self) -> None:
+        """Initialize random population of binary chromosomes."""
+        self.population = []
+        for _ in range(self.population_size):
+            chromosome = [random.randint(0, 1) for _ in range(self.gene_length)]
+            self.population.append(chromosome)
+    
+    def evaluate_fitness(self) -> List[float]:
+        """Evaluate fitness for all individuals in population."""
+        if self.fitness_function is None:
+            raise ValueError("Fitness function not set")
+        
+        fitness_scores = []
+        for individual in self.population:
+            fitness = self.fitness_function(individual)
+            fitness_scores.append(fitness)
+        
+        return fitness_scores
+    
+    def selection(self, fitness_scores: List[float]) -> List[List[int]]:
+        """
+        Tournament selection to choose parents.
+        
+        Args:
+            fitness_scores (List[float]): Fitness scores for population
+            
+        Returns:
+            List[List[int]]: Selected parents
+        """
+        parents = []
+        tournament_size = 3
+        
+        for _ in range(self.population_size):
+            # Tournament selection
+            tournament_indices = random.sample(range(len(self.population)), tournament_size)
+            tournament_fitness = [fitness_scores[i] for i in tournament_indices]
+            winner_index = tournament_indices[np.argmax(tournament_fitness)]
+            parents.append(self.population[winner_index].copy())
+        
+        return parents
+    
+    def crossover(self, parent1: List[int], parent2: List[int]) -> Tuple[List[int], List[int]]:
+        """
+        Single-point crossover between two parents.
+        
+        Args:
+            parent1 (List[int]): First parent chromosome
+            parent2 (List[int]): Second parent chromosome
+            
+        Returns:
+            Tuple[List[int], List[int]]: Two offspring
+        """
+        if random.random() > self.crossover_rate:
+            return parent1.copy(), parent2.copy()
+        
+        crossover_point = random.randint(1, self.gene_length - 1)
+        
+        offspring1 = parent1[:crossover_point] + parent2[crossover_point:]
+        offspring2 = parent2[:crossover_point] + parent1[crossover_point:]
+        
+        return offspring1, offspring2
+    
+    def mutate(self, chromosome: List[int]) -> List[int]:
+        """
+        Apply bit-flip mutation to chromosome.
+        
+        Args:
+            chromosome (List[int]): Chromosome to mutate
+            
+        Returns:
+            List[int]: Mutated chromosome
+        """
+        mutated = chromosome.copy()
+        for i in range(len(mutated)):
+            if random.random() < self.mutation_rate:
+                mutated[i] = 1 - mutated[i]  # Flip bit
+        
+        return mutated
+    
+    def evolve_generation(self) -> None:
+        """Evolve one generation of the population."""
+        # Evaluate fitness
+        fitness_scores = self.evaluate_fitness()
+        
+        # Record statistics
+        best_fitness = max(fitness_scores)
+        avg_fitness = np.mean(fitness_scores)
+        self.best_fitness_history.append(best_fitness)
+        self.average_fitness_history.append(avg_fitness)
+        
+        # Elitism: keep best individuals
+        num_elites = int(self.elitism_rate * self.population_size)
+        elite_indices = np.argsort(fitness_scores)[-num_elites:]
+        elites = [self.population[i].copy() for i in elite_indices]
+        
+        # Selection
+        parents = self.selection(fitness_scores)
+        
+        # Create new population
+        new_population = elites.copy()
+        
+        # Generate offspring
+        while len(new_population) < self.population_size:
+            parent1 = random.choice(parents)
+            parent2 = random.choice(parents)
+            
+            offspring1, offspring2 = self.crossover(parent1, parent2)
+            
+            offspring1 = self.mutate(offspring1)
+            offspring2 = self.mutate(offspring2)
+            
+            new_population.extend([offspring1, offspring2])
+        
+        # Trim population to exact size
+        self.population = new_population[:self.population_size]
+    
+    def run(self, fitness_function: Callable[[List[int]], float], verbose: bool = True) -> Tuple[List[int], float]:
+        """
+        Run the genetic algorithm.
+        
+        Args:
+            fitness_function (Callable): Function to evaluate chromosome fitness
+            verbose (bool): Whether to print progress
+            
+        Returns:
+            Tuple[List[int], float]: Best chromosome and its fitness
+        """
+        self.fitness_function = fitness_function
+        self.initialize_population()
+        
+        if verbose:
+            print("Starting genetic algorithm...")
+            print(f"Population size: {self.population_size}")
+            print(f"Gene length: {self.gene_length}")
+            print(f"Generations: {self.generations}")
+            print("-" * 40)
+        
+        for generation in range(self.generations):
+            self.evolve_generation()
+            
+            if verbose and generation % 10 == 0:
+                best_fitness = self.best_fitness_history[-1]
+                avg_fitness = self.average_fitness_history[-1]
+                print(f"Generation {generation}: Best={best_fitness:.4f}, Avg={avg_fitness:.4f}")
+        
+        # Return best solution
+        final_fitness = self.evaluate_fitness()
+        best_index = np.argmax(final_fitness)
+        best_chromosome = self.population[best_index]
+        best_fitness = final_fitness[best_index]
+        
+        if verbose:
+            print("-" * 40)
+            print(f"Best solution: {best_chromosome}")
+            print(f"Best fitness: {best_fitness:.4f}")
+        
+        return best_chromosome, best_fitness
+    
+    def plot_evolution(self) -> None:
+        """Plot the evolution of fitness over generations."""
+        plt.figure(figsize=(12, 4))
+        
+        plt.subplot(1, 2, 1)
+        generations = range(len(self.best_fitness_history))
+        plt.plot(generations, self.best_fitness_history, 'r-', linewidth=2, label='Best Fitness')
+        plt.plot(generations, self.average_fitness_history, 'b-', linewidth=2, label='Average Fitness')
+        plt.xlabel('Generation')
+        plt.ylabel('Fitness')
+        plt.title('Fitness Evolution')
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        
+        plt.subplot(1, 2, 2)
+        # Plot last 50 generations for detail
+        start_gen = max(0, len(self.best_fitness_history) - 50)
+        recent_gens = range(start_gen, len(self.best_fitness_history))
+        plt.plot(recent_gens, self.best_fitness_history[start_gen:], 'r-', linewidth=2)
+        plt.xlabel('Generation')
+        plt.ylabel('Best Fitness')
+        plt.title('Best Fitness (Recent Generations)')
+        plt.grid(True, alpha=0.3)
+        
+        plt.tight_layout()
+        plt.show()
+
+# Example fitness functions
+
+def ones_maximization(chromosome: List[int]) -> float:
+    """Fitness function that maximizes the number of 1s."""
+    return sum(chromosome)
+
+def alternating_pattern(chromosome: List[int]) -> float:
+    """Fitness function that rewards alternating 0-1 pattern."""
+    fitness = 0
+    for i in range(len(chromosome) - 1):
+        if chromosome[i] != chromosome[i + 1]:
+            fitness += 1
+    return fitness
+
+def target_sum(chromosome: List[int], target: int = 5) -> float:
+    """Fitness function that tries to achieve a target sum."""
+    current_sum = sum(chromosome)
+    return 1.0 / (1.0 + abs(current_sum - target))
+
+def knapsack_fitness(chromosome: List[int]) -> float:
+    """
+    Example knapsack problem fitness function.
+    Items have weights and values, maximize value without exceeding capacity.
+    """
+    # Example items: (weight, value)
+    items = [(2, 3), (3, 4), (4, 5), (5, 6), (1, 1), (6, 8), (7, 9), (8, 10), (2, 2), (3, 5)]
+    capacity = 15
+    
+    total_weight = 0
+    total_value = 0
+    
+    for i, selected in enumerate(chromosome):
+        if selected and i < len(items):
+            weight, value = items[i]
+            total_weight += weight
+            total_value += value
+    
+    # Penalty for exceeding capacity
+    if total_weight > capacity:
+        return 0  # Invalid solution
+    
+    return total_value
+
+def main():
+    """Demonstrate the genetic algorithm with different problems."""
+    print("Genetic Algorithm Demonstrations")
+    print("=" * 40)
+    
+    # Problem 1: Maximize number of 1s
+    print("\n1. Maximizing number of 1s:")
+    ga1 = GeneticAlgorithm(population_size=50, gene_length=20, generations=50)
+    best_solution1, best_fitness1 = ga1.run(ones_maximization)
+    
+    # Problem 2: Alternating pattern
+    print("\n2. Alternating 0-1 pattern:")
+    ga2 = GeneticAlgorithm(population_size=50, gene_length=20, generations=100)
+    best_solution2, best_fitness2 = ga2.run(alternating_pattern)
+    
+    # Problem 3: Knapsack problem
+    print("\n3. Knapsack problem:")
+    ga3 = GeneticAlgorithm(population_size=100, gene_length=10, generations=100)
+    best_solution3, best_fitness3 = ga3.run(knapsack_fitness)
+    
+    # Plot evolution for knapsack problem
+    ga3.plot_evolution()
+    
+    print("\n" + "=" * 40)
+    print("Summary of results:")
+    print(f"Problem 1 - Max 1s: {best_fitness1}/{ga1.gene_length}")
+    print(f"Problem 2 - Alternating: {best_fitness2}/{ga2.gene_length-1}")
+    print(f"Problem 3 - Knapsack value: {best_fitness3}")
+
+if __name__ == "__main__":
+    main()
