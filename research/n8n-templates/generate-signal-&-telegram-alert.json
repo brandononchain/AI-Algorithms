@@ -1,0 +1,40 @@
+{
+  "name": "Generate Signal & Telegram Alert",
+  "nodes": [
+    {
+      "parameters": {
+        "functionCode": "const df = $input.item.json.values;\n// instantiate your MeanReversionAgent here if you bundled it in a custom node;\n// for demo, simple threshold logic:\nconst closes = df.map(r=>r.close);\nconst mean = closes.slice(-20).reduce((a,b)=>a+b)/20;\nconst std = Math.sqrt(closes.slice(-20).map(x=>Math.pow(x-mean,2)).reduce((a,b)=>a+b)/20);\nconst latest = closes.slice(-1)[0];\nconst z = std? (latest-mean)/std : 0;\nconst signal = z>1.5?'SELL':(z<-1.5?'BUY':'HOLD');\nreturn [{ json: { signal } }];"
+      },
+      "name": "Compute Signal",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [650, 300]
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_TELEGRAM_CHAT_ID",
+        "text": "Trading signal: {{$node[\"Compute Signal\"].json[\"signal\"]}}"
+      },
+      "name": "Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [850, 300]
+    }
+  ],
+  "connections": {
+    "Compute Signal": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "id": "signalAlert003"
+}
